@@ -17,7 +17,6 @@ export default function Navigation() {
 
   const handleLogout = async () => {
     setSession(null);
-    console.log(session);
     await login.get('/logout');
     navigate('/login');
   };

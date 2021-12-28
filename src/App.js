@@ -33,10 +33,6 @@ import Container from 'react-bootstrap/Container';
 
 export default function App() {
   const [session] = useSession();
-  console.log(session);
-
-  // const { data } = useGetUser(user.userId);
-  // console.log('App.js:', data);
 
   if (session) {
     return (
@@ -44,7 +40,6 @@ export default function App() {
         <Navigation />
         <Container className='flex-shrink-0 mb-3' fluid>
           <Routes>
-            <Route path='*' element={<NotFound />} />
             <Route path='/' element={<Home />} />
             <Route path='/posts' element={<Posts />} />
             <Route path='/posts/:id' element={<PostDetails />} />
@@ -58,6 +53,7 @@ export default function App() {
             <Route path='/profile' element={<Profile />} />
             <Route path='/pass' element={<Pass />} />
             <Route path='/about' element={<About />} />
+            <Route path='*' element={<NotFound />} />
           </Routes>
         </Container>
         <footer className='mt-auto py-3 bg-light'>
@@ -68,7 +64,6 @@ export default function App() {
   } else {
     return (
       <Routes>
-        <Route path='*' element={<Login />} />
         <Route path='/registro' element={<Registro />} />
         <Route path='/gracias' element={<Gracias />} />
         <Route path='/verificar' element={<Verificar />} />
@@ -77,6 +72,7 @@ export default function App() {
         <Route path='/enviado' element={<Enviado />} />
         <Route path='/reinicio' element={<Reinicio />} />
         <Route path='/exito' element={<Exito />} />
+        <Route path='*' element={<Login />} />
       </Routes>
     );
   }
