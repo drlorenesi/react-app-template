@@ -15,12 +15,11 @@ import { useSession } from '../../context/SessionContext';
 
 function Login() {
   const navigate = useNavigate();
-  const [session, setSession] = useSession();
+  const { setSession } = useSession();
   const [signInError, setSignInError] = useState(false);
   const [show, setShow] = useState(false);
 
   const testLogin = () => {
-    console.log(session);
     setSession({ id: 1 });
     navigate('/');
   };

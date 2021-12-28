@@ -32,7 +32,7 @@ import Exito from './pages/login/Exito';
 import Container from 'react-bootstrap/Container';
 
 export default function App() {
-  const [session] = useSession();
+  const { session } = useSession();
 
   if (session) {
     return (

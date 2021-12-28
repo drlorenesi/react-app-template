@@ -1,34 +1,22 @@
-import { createContext, useState, useEffect, useContext } from 'react';
+import { createContext, useContext } from 'react';
+import { useLocalStorage } from '../hooks/useLocalStorage';
 
 const SessionContext = createContext();
 
-// Local Storage Hook
-function useLocalStorage(key, initialValue) {
-  const [value, setValue] = useState(() => {
-    const storedValue = JSON.parse(localStorage.getItem(key) || null);
-    if (storedValue) return storedValue;
-    if (initialValue instanceof Function) return initialValue();
-    return initialValue;
-  });
-
-  useEffect(() => {
-    localStorage.setItem(key, JSON.stringify(value));
-  }, [key, value]);
-
-  return [value, setValue];
-}
-
 // Session Provider
 function SessionProvider(props) {
-  const [session, setSession] = useLocalStorage('sessionInfo', null);
-  return <SessionContext.Provider value={[session, setSession]} {...props} />;
+  const { value: session, setValue: setSession } = useLocalStorage(
+    'sessionInfo',
+    null
+  );
+  return <SessionContext.Provider value={{ session, setSession }} {...props} />;
 }
 
 // Use Session Hook
 function useSession() {
   const context = useContext(SessionContext);
   if (!context) throw new Error('Not inside SessionProvider.');
-  return context; // const [session, setSession] = useSession()
+  return context; // const { session, setSession } = useSession()
 }
 
 export { useSession, SessionProvider };

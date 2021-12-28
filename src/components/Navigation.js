@@ -11,7 +11,7 @@ import login from '../api/loginService';
 import { useSession } from '../context/SessionContext';
 
 export default function Navigation() {
-  const [session, setSession] = useSession();
+  const { setSession } = useSession();
 
   const navigate = useNavigate();
 
