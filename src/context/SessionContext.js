@@ -5,7 +5,7 @@ const SessionContext = createContext();
 // Local Storage Hook
 function useLocalStorage(key, initialValue) {
   const [value, setValue] = useState(() => {
-    const storedValue = JSON.parse(localStorage.getItem(key));
+    const storedValue = JSON.parse(localStorage.getItem(key) || null);
     if (storedValue) return storedValue;
     if (initialValue instanceof Function) return initialValue();
     return initialValue;
