@@ -1,10 +1,10 @@
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import toast from 'react-hot-toast';
-import api from '../api/apiService';
+import auth from '../api/auth-api';
 
 // 1. Get Albums
 const getAlbums = () => {
-  return api.get('/albums');
+  return auth.get('/albums');
 };
 
 export const useGetAlbums = (
@@ -31,7 +31,7 @@ export const useGetAlbums = (
 
 // 2. Get Album
 const getAlbum = (id) => {
-  return api.get(`albums/${id}`);
+  return auth.get(`albums/${id}`);
 };
 
 export const useGetAlbum = (
@@ -59,7 +59,7 @@ export const useGetAlbum = (
 
 // 3. Add Album
 const addAlbum = (album) => {
-  return api.post('/albums', album);
+  return auth.post('/albums', album);
 };
 
 export const useAddAlbum = () => {
@@ -118,7 +118,7 @@ export const useAddAlbum = () => {
 
 // 4. Delete Album
 const deleteAlbum = (id) => {
-  return api.delete(`/albums/${id}`);
+  return auth.delete(`/albums/${id}`);
 };
 
 export const useDeleteAlbum = () => {

@@ -16,7 +16,7 @@ function SessionProvider(props) {
 function useSession() {
   const context = useContext(SessionContext);
   if (!context) throw new Error('Not inside SessionProvider.');
-  return context; // const { session, setSession } = useSession()
+  return context; // const { session, setSession } = useSession();
 }
 
 export { useSession, SessionProvider };

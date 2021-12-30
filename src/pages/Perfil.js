@@ -1,6 +1,6 @@
-import { useGetProfile } from '../../hooks/useProfile';
-import Loader from '../../components/Loader';
-import ErrorMessage from '../../components/ErrorMessage';
+import { useGetProfile } from '../hooks/useProfile';
+import Loader from '../components/Loader';
+import ErrorMessage from '../components/ErrorMessage';
 
 export default function Profile() {
   const onSuccess = (data) => {
@@ -31,8 +31,8 @@ export default function Profile() {
 
   return (
     <>
-      <h1>Profile</h1>
-      <p>User profile</p>
+      <h1>Mi Perfil</h1>
+      <p>Perfil del Usuario</p>
     </>
   );
 }

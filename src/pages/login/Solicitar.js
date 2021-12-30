@@ -6,8 +6,8 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 // Form Inputs
 import InputField from '../../components/formInputs/InputField';
-// Services
-import login from '../../api/loginService';
+// Login API
+import login from '../../api/login-api';
 
 export default function Solicitar() {
   let navigate = useNavigate();
@@ -15,6 +15,7 @@ export default function Solicitar() {
   const initialValues = {
     email: '',
   };
+
   const validationSchema = Yup.object({
     email: Yup.string()
       .matches(
@@ -23,7 +24,8 @@ export default function Solicitar() {
       )
       .required('Campo requerido.'),
   });
-  const onSubmit = async (values, { setSubmitting }) => {
+
+  const onSubmit = async (values) => {
     await login.post('/solicitar', values);
     navigate('/enviado');
   };

@@ -8,8 +8,8 @@ import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 // Form Inputs
 import InputField from '../../components/formInputs/InputField';
-// Services
-import login from '../../api/loginService';
+// Login API
+import login from '../../api/login-api';
 
 export default function Registro() {
   const navigate = useNavigate();
@@ -45,18 +45,13 @@ export default function Registro() {
       .oneOf([Yup.ref('pass'), null], 'Las contraseñas no concuerdan.'),
   });
 
-  const onSubmit = async (values, { setSubmitting }) => {
+  const onSubmit = async (values) => {
     try {
       await login.post('/registro', values);
-      setSubmitting(false);
       navigate('/gracias');
-    } catch ({ response }) {
-      if (response.status >= 400 && response.status < 500) {
-        setShow(true);
-        setRegisterError(
-          'Por favor usa otro email o contacta a tu administrador.'
-        );
-      }
+    } catch (err) {
+      setRegisterError(err.response.data?.mensaje);
+      setShow(true);
     }
   };
 

@@ -8,9 +8,9 @@ import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 // Form Inputs
 import InputField from '../../components/formInputs/InputField';
-// Services
-import login from '../../api/loginService';
-// Test Login
+// Login API
+import login from '../../api/login-api';
+// Session Context
 import { useSession } from '../../context/SessionContext';
 
 function Login() {
@@ -36,27 +36,15 @@ function Login() {
     pass: Yup.string().required('Campo requerido.'),
   });
 
-  const onSubmit = async (values, { setSubmitting }) => {
+  const onSubmit = async (values) => {
     try {
       const res = await login.post('login', values);
       const sessionInfo = res.headers['session-info'];
       setSession(sessionInfo);
       navigate('/');
-    } catch ({ response }) {
-      if (response.status === 400) {
-        setShow(true);
-        setSignInError(
-          'Por favor revisa tu email o contraseña e intenta de nuevo.'
-        );
-      } else if (response.status === 401) {
-        setShow(true);
-        setSignInError(
-          'Tu cuenta aún no ha sido activada. Por favor revisa tu correo.'
-        );
-      } else if (response.status === 403) {
-        setShow(true);
-        setSignInError('Tu cuenta se encuentra temporalmente suspendida.');
-      }
+    } catch (err) {
+      setSignInError(err.response.data?.mensaje);
+      setShow(true);
     }
   };
 

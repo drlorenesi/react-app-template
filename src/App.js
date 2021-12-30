@@ -10,12 +10,12 @@ import PostDetails from './pages/posts/PostDetails';
 import Albums from './pages/albums/Albums';
 import AlbumDetails from './pages/albums/AlbumDetails';
 import Users from './pages/Users';
-import HorizontalForm from './pages/forms/HorizontalForm';
-import SampleForm from './pages/forms/SampleForm';
-import FormTemplate from './pages/forms/FormTemplate';
+import HorizontalForm from './pages/formularios/HorizontalForm';
+import SampleForm from './pages/formularios/SampleForm';
+import FormTemplate from './pages/formularios/FormTemplate';
 import Charts from './pages/Charts';
-import About from './pages/About';
-import Profile from './pages/user/Profile';
+import Acerca from './pages/Acerca';
+import Perfil from './pages/Perfil';
 import Pass from './pages/Pass';
 import NotFound from './pages/NotFound';
 import Home from './pages/Home';
@@ -47,12 +47,19 @@ export default function App() {
             <Route path='/albums/:id' element={<AlbumDetails />} />
             <Route path='/users' element={<Users />} />
             <Route path='/charts' element={<Charts />} />
-            <Route path='/forms/sample-form' element={<SampleForm />} />
-            <Route path='/forms/horizontal-form' element={<HorizontalForm />} />
-            <Route path='/forms/form-template' element={<FormTemplate />} />
-            <Route path='/profile' element={<Profile />} />
+            <Route path='/formularios/sample-form' element={<SampleForm />} />
+            <Route
+              path='/formularios/horizontal-form'
+              element={<HorizontalForm />}
+            />
+            <Route
+              path='/formularios/form-template'
+              element={<FormTemplate />}
+            />
+            <Route path='/perfil' element={<Perfil />} />
             <Route path='/pass' element={<Pass />} />
-            <Route path='/about' element={<About />} />
+            <Route path='/acerca' element={<Acerca />} />
+            <Route path='/reinicio' element={<Reinicio />} />
             <Route path='*' element={<NotFound />} />
           </Routes>
         </Container>

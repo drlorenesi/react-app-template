@@ -7,15 +7,16 @@ const login = axios.create({
 });
 
 login.interceptors.response.use(null, (error) => {
-  // Handle unexpected errors
+  // Manejar errores inesperados
   const expectedError =
     error.response &&
     error.response.status >= 400 &&
     error.response.status < 500;
   if (!expectedError && !axios.isCancel(error)) {
-    toast.error('Se ha producido un error inesperado 😖');
-    // Send info to logger
-    console.log('Enviando información a registro...', error);
+    // Mostrar menaje de error al usuario
+    toast.error('Lo sentimos, ocurrió un error inesperado 😖');
+    // Enviar información de error a administrador
+    console.log('Enviando error a administrador...', error);
   }
   return Promise.reject(error);
 });

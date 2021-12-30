@@ -1,6 +1,6 @@
 import { useQuery } from 'react-query';
 
-import auth from '../api/authService';
+import auth from '../api/auth-api';
 
 // 1. Get Profile
 const getPerfil = () => {

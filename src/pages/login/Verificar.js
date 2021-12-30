@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import Loader from '../../components/Loader';
 // Services & utils
-import login from '../../api/loginService';
+import login from '../../api/login-api';
 // import useLogout from '../../services/useLogout';
 
 export default function Verificar() {

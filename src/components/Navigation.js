@@ -6,7 +6,7 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 // Services
-import login from '../api/loginService';
+import login from '../api/login-api';
 // Test Login
 import { useSession } from '../context/SessionContext';
 
@@ -45,15 +45,15 @@ export default function Navigation() {
             <Nav.Link as={NavLink} to='/users'>
               Users
             </Nav.Link>
-            <NavDropdown title='Forms'>
-              <NavDropdown.Item as={NavLink} to='/forms/sample-form'>
+            <NavDropdown title='Formularios'>
+              <NavDropdown.Item as={NavLink} to='/formularios/sample-form'>
                 Sample Form
               </NavDropdown.Item>
-              <NavDropdown.Item as={NavLink} to='/forms/horizontal-form'>
+              <NavDropdown.Item as={NavLink} to='/formularios/horizontal-form'>
                 Horizontal Form
               </NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item as={NavLink} to='/forms/form-template'>
+              <NavDropdown.Item as={NavLink} to='/formularios/form-template'>
                 Form Template
               </NavDropdown.Item>
             </NavDropdown>
@@ -62,19 +62,19 @@ export default function Navigation() {
             </Nav.Link>
           </Nav>
           <Nav>
-            <Nav.Link as={NavLink} to='/about'>
-              About
+            <Nav.Link as={NavLink} to='/acerca'>
+              Acerca de
             </Nav.Link>
             <NavDropdown align='end' title={<FaUserCircle size={21} />}>
-              <NavDropdown.Item as={NavLink} to='/profile'>
-                Profile
+              <NavDropdown.Item as={NavLink} to='/perfil'>
+                Mi Perfil
               </NavDropdown.Item>
               <NavDropdown.Item as={NavLink} to='/pass'>
-                Change Password
+                Cambiar Contraseña
               </NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item onClick={handleLogout}>
-                Sign out
+                Cerrar Sesión
               </NavDropdown.Item>
             </NavDropdown>
           </Nav>

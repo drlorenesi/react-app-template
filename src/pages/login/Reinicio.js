@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { Formik, Form as FormikForm } from 'formik';
 import * as Yup from 'yup';
@@ -8,26 +8,35 @@ import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 // Form Inputs
 import InputField from '../../components/formInputs/InputField';
-// Services & utils
-import login from '../../api/loginService';
-// import useLogout from '../../services/useLogout';
+// Login API
+import login from '../../api/login-api';
+// Context
+import { useSession } from '../../context/SessionContext';
 
 export default function Reinicio() {
   let navigate = useNavigate();
+  const { session, setSession } = useSession();
   const [searchParams] = useSearchParams();
   const x = searchParams.get('x');
   const y = searchParams.get('y');
 
-  // Cerrar sesión de usuario en caso la tenga abierta
-  // useLogout(`/nueva?x=${x}&y=${y}`);
-
   const [updateError, setUpdateError] = useState(false);
   const [show, setShow] = useState(false);
+
+  // Cerrar sesión de usuario en caso la tenga abierta
+  useEffect(() => {
+    if (session) logOut();
+    async function logOut() {
+      await login.get('/logout');
+      setSession(null);
+    }
+  }, [session, setSession]);
 
   const initialValues = {
     pass: '',
     confirmPass: '',
   };
+
   const validationSchema = Yup.object({
     pass: Yup.string()
       .min(4, 'Contraseña no puede ser menor a 4 caracteres.')
@@ -36,18 +45,14 @@ export default function Reinicio() {
       .required('Por favor confirma tu contraseña.')
       .oneOf([Yup.ref('pass'), null], 'Las contraseñas no concuerdan.'),
   });
-  const onSubmit = async (values, { setSubmitting }) => {
+
+  const onSubmit = async (values) => {
     try {
       await login.post(`/reinicio?x=${encodeURIComponent(x)}&y=${y}`, values);
-      setSubmitting(false);
       navigate('/exito');
-    } catch ({ response }) {
-      if (response.status >= 400 && response.status < 500) {
-        setShow(true);
-        setUpdateError(
-          'Por favor revisa tu enlace o solicita un nuevo correo de re-inicio de contraseña.'
-        );
-      }
+    } catch (err) {
+      setUpdateError(err.response.data?.mensaje);
+      setShow(true);
     }
   };
 

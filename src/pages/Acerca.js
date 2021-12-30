@@ -1,7 +1,7 @@
 export default function About() {
   return (
     <>
-      <h1>About</h1>
+      <h1>Acerca de este Portal</h1>
       <p>
         Lorem Ipsum is simply dummy text of the printing and typesetting
         industry. Lorem Ipsum has been the industry's standard dummy text ever

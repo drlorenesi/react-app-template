@@ -1,25 +1,25 @@
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
-const api = axios.create({
+const auth = axios.create({
   baseURL: process.env.REACT_APP_AUTH,
   withCredentials: true,
 });
 
-api.interceptors.response.use(null, (error) => {
-  // Handle unexpected errors
+auth.interceptors.response.use(null, (error) => {
+  // Manejar errores inesperados
   const expectedError =
     error.response &&
     error.response.status >= 400 &&
     error.response.status < 500;
   if (!expectedError && !axios.isCancel(error)) {
-    // Send error info to logger
-    console.error('Enviando información a logger externo...', error);
-    // Display error message to user
-    toast.error('Se ha producido un error inesperado');
+    // Mostrar menaje de error al usuario
+    toast.error('Lo sentimos, ocurrió un error inesperado 😖');
+    // Enviar información de error a administrador
+    console.error('Enviando error a administrador...', error);
   }
-  // Handle expected errors
-  // 1. Unauthenticated requests
+  // Manejar errores esperados
+  // 1. Solicitudes no autenticadas
   if (error.response.status === 401) {
     toast.error('Por favor inicia sesión');
     setTimeout(() => {
@@ -27,7 +27,7 @@ api.interceptors.response.use(null, (error) => {
       window.location.assign('/login');
     }, 1000);
   }
-  // 2. Unauthorized requests
+  // 2. Solicitudes no autorizadas
   if (error.response.status === 403) {
     toast.error('No tienes permiso para acceder al recurso');
     setTimeout(() => {
@@ -37,4 +37,4 @@ api.interceptors.response.use(null, (error) => {
   return Promise.reject(error);
 });
 
-export default api;
+export default auth;
