@@ -1,12 +1,12 @@
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
-const auth = axios.create({
+const config = axios.create({
   baseURL: process.env.REACT_APP_AUTH,
   withCredentials: true,
 });
 
-auth.interceptors.response.use(null, (error) => {
+config.interceptors.response.use(null, (error) => {
   // Manejar errores inesperados
   const expectedError =
     error.response &&
@@ -34,7 +34,11 @@ auth.interceptors.response.use(null, (error) => {
       window.location.assign('/');
     }, 1000);
   }
+  // 3. Recurso no existe
+  if (error.response.status === 404) {
+    // navigate('/not-found', { replace: true })
+  }
   return Promise.reject(error);
 });
 
-export default auth;
+export default config;

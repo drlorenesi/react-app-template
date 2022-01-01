@@ -1,9 +1,5 @@
-import { useNavigate } from 'react-router-dom';
-import {
-  useGetAlbums,
-  useAddAlbum,
-  useDeleteAlbum,
-} from '../../hooks/useAlbums';
+import { useNavigate, Link } from 'react-router-dom';
+import { useGetAlbums, useDeleteAlbum } from '../../hooks/useAlbums';
 import Loader from '../../components/Loader';
 import ErrorMessage from '../../components/ErrorMessage';
 import DataTable from '../../components/DataTable';
@@ -26,7 +22,6 @@ export default function Albums() {
     // isSuccess,
     error,
   } = useGetAlbums(false);
-  const { mutate: addAlbum } = useAddAlbum();
   const { mutate: deleteAlbum } = useDeleteAlbum();
 
   if (isLoading) {
@@ -34,16 +29,9 @@ export default function Albums() {
   }
 
   if (isError) {
-    return <ErrorMessage message={error.message} />;
+    console.log(error.message);
+    return <ErrorMessage error={error} />;
   }
-
-  // Add Album
-  const handleAdd = () => {
-    addAlbum({
-      userId: 1,
-      title: 'quidem molestiae enim',
-    });
-  };
 
   // Edit
   const handleEdit = (id) => {
@@ -109,11 +97,11 @@ export default function Albums() {
           <h1>Albums</h1>
         </div>
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          {/* <Link to={'/albumbs/new'}> */}
-          <Button variant='success' onClick={() => handleAdd()}>
-            <FaPlus /> Add Album
-          </Button>
-          {/* </Link> */}
+          <Link to='/albums/new'>
+            <Button variant='success'>
+              <FaPlus /> Album
+            </Button>
+          </Link>
         </div>
       </div>
       <Button
@@ -121,7 +109,7 @@ export default function Albums() {
         onClick={refetch}
         disabled={isFetching ? true : null}
       >
-        {isFetching ? 'Getting Albums...' : 'Get Albums'}
+        {isFetching ? 'Buscando Albums...' : 'Obtener Albums'}
       </Button>
       {dataUpdatedAt ? (
         <p>

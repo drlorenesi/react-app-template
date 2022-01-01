@@ -1,12 +1,12 @@
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
-const login = axios.create({
+const config = axios.create({
   baseURL: process.env.REACT_APP_AUTH,
   withCredentials: true,
 });
 
-login.interceptors.response.use(null, (error) => {
+config.interceptors.response.use(null, (error) => {
   // Manejar errores inesperados
   const expectedError =
     error.response &&
@@ -21,4 +21,4 @@ login.interceptors.response.use(null, (error) => {
   return Promise.reject(error);
 });
 
-export default login;
+export default config;

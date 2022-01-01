@@ -8,7 +8,7 @@ import { useSession } from './context/SessionContext';
 import Posts from './pages/posts/Posts';
 import PostDetails from './pages/posts/PostDetails';
 import Albums from './pages/albums/Albums';
-import AlbumDetails from './pages/albums/AlbumDetails';
+import AlbumDetalles from './pages/albums/AlbumDetalles';
 import Users from './pages/Users';
 import HorizontalForm from './pages/formularios/HorizontalForm';
 import SampleForm from './pages/formularios/SampleForm';
@@ -44,7 +44,7 @@ export default function App() {
             <Route path='/posts' element={<Posts />} />
             <Route path='/posts/:id' element={<PostDetails />} />
             <Route path='/albums' element={<Albums />} />
-            <Route path='/albums/:id' element={<AlbumDetails />} />
+            <Route path='/albums/:id' element={<AlbumDetalles />} />
             <Route path='/users' element={<Users />} />
             <Route path='/charts' element={<Charts />} />
             <Route path='/formularios/sample-form' element={<SampleForm />} />

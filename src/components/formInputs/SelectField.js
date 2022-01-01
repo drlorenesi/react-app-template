@@ -8,7 +8,10 @@ export default function SelectField({ options, formText, ...props }) {
   return (
     <>
       <Form.Select isInvalid={meta.touched && meta.error} {...field} {...props}>
-        {options.map((option) => (
+        <option key='-Seleccionar-' value=''>
+          - Seleccionar -
+        </option>
+        {options?.map((option) => (
           <option key={option.value} value={option.value}>
             {option.key}
           </option>

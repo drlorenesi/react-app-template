@@ -1,10 +1,10 @@
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import toast from 'react-hot-toast';
-import auth from '../api/auth-api';
+import axios from 'axios';
 
-// 1. Get Albums
+// 1. Obtener Albums
 const getAlbums = () => {
-  return auth.get('/albums');
+  return axios.get('https://jsonplaceholder.typicode.com/albums');
 };
 
 export const useGetAlbums = (
@@ -29,9 +29,9 @@ export const useGetAlbums = (
   });
 };
 
-// 2. Get Album
+// 2. Obtener Album
 const getAlbum = (id) => {
-  return auth.get(`albums/${id}`);
+  return axios.get(`https://jsonplaceholder.typicode.com/albums/${id}`);
 };
 
 export const useGetAlbum = (
@@ -40,8 +40,8 @@ export const useGetAlbum = (
   onSuccess = null,
   onError = null
 ) => {
-  return useQuery(['album', id], () => getAlbum(id), {
-    enabled: true, // Default: true
+  return useQuery(['albums', id], () => getAlbum(id), {
+    enabled, // Default: true
     cacheTime: 1000 * 60 * 5, // Default: 5 mins
     staleTime: 0, // Default: 0 seconds
     refetchOnMount: true, // Default: true
@@ -52,31 +52,87 @@ export const useGetAlbum = (
     // Success and Error Callbacks
     onSuccess,
     onError,
+    retry: (failureCount, err) =>
+      err?.response?.status === 404 && failureCount < 1 ? true : false,
     // Maintain Data from last successful fetch
     // keepPreviousData: true
   });
 };
 
-// 3. Add Album
+// 3. Actualizar Album (invalidateQueries 'albums'????)
+const putAlbum = ({ id, values }) => {
+  return axios.put(`https://jsonplaceholder.typicode.com/albums/${id}`, values);
+};
+
+export const usePutAlbum = () => {
+  const queryClient = useQueryClient();
+  return useMutation(putAlbum, {
+    // Opcion A - Tradicional
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(['albums', `${data.data.id}`]);
+      toast.success('Album actualizado!');
+    },
+    onError: (error) => {
+      toast.error('No fue posible actualizar album.');
+    },
+    // NOTA: Opciones B & C serviran únicamente si el 'recurso' ha sido "poblado"
+    // Opción B - Actualizar después de 'onSuccess' (sin enviar una solicitud de red adicional)
+    // onSuccess: (data) => {
+    //   queryClient.setQueryData(['albums', `${data.data.id}`], (oldData) => {
+    //     return {
+    //       ...oldData,
+    //       data: data.data,
+    //     };
+    //   });
+    //   toast.success('Album actualizado!');
+    // },
+    // onError: (error) => {
+    //   toast.error('No fue posible actualizar album.');
+    // },
+    // Opción C - Optimistic update
+    // Usa valores pasados a 'updateAlbum({ id, values })'
+    // onMutate: async (data) => {
+    //   await queryClient.cancelQueries(['albums', `${data.id}`]);
+    //   const previousData = queryClient.getQueryData(['albums', `${data.id}`]);
+    //   queryClient.setQueryData(['albums', `${data.id}`], (oldData) => {
+    //     return {
+    //       ...oldData,
+    //       data: data.values,
+    //     };
+    //   });
+    //   return {
+    //     previousData,
+    //   };
+    // },
+    // onError: (error, data, context) => {
+    //   queryClient.setQueryData(['albums', `${data.id}`], context.previousData);
+    //   toast.error('No fue posible actualizar album.'); // revisar cual va primero
+    // },
+    // onSettled: (data) => {
+    //   queryClient.invalidateQueries(['albums', `${data.data.id}`]);
+    //   toast.success('Album actualizado!');
+    // },
+  });
+};
+
+// 4. Agregar Album
 const addAlbum = (album) => {
-  return auth.post('/albums', album);
+  return axios.post('https://jsonplaceholder.typicode.com/albums/', album);
 };
 
 export const useAddAlbum = () => {
   const queryClient = useQueryClient();
   return useMutation(addAlbum, {
     // Option A - Traditional
-    // onSuccess: (data) => {
-    //   queryClient.invalidateQueries('posts');
-    //   toast.success('Added new Post!');
-    //   console.log(data);
-    // },
-    // onError: (error) => {
-    //   toast.error('Could not add new Album...');
-    //   console.log(error);
-    // },
-    // NOTE: Options B & C will only work if 'albums' has been "populated"
-    // Option B - Update 'onSuccess' without sending and additional network request
+    onSuccess: (data) => {
+      queryClient.invalidateQueries('posts');
+      toast.success('Added new Post!');
+    },
+    onError: (error) => {
+      toast.error('Could not add new Album...');
+    },
+    // NOTA: Opciones B & C serviran únicamente si el 'recurso' ha sido "poblado"
+    // Opción B - Actualizar después de 'onSuccess' (sin enviar una solicitud de red adicional)
     // onSuccess: (data) => {
     //   queryClient.setQueryData('albums', (oldData) => {
     //     return {
@@ -91,34 +147,34 @@ export const useAddAlbum = () => {
     //   console.log(error);
     // },
     // Option C - Optimistic update
-    onMutate: async (data) => {
-      await queryClient.cancelQueries('albums');
-      const previousData = queryClient.getQueryData('albums');
-      queryClient.setQueryData('albums', (oldData) => {
-        return {
-          ...oldData,
-          data: [...oldData.data, { id: oldData?.data?.length + 1, ...data }],
-        };
-      });
-      return {
-        previousData,
-      };
-    },
-    onError: (error, data, context) => {
-      queryClient.setQueryData('albums', context.previousData);
-      toast.error('Could not add new Album...');
-      console.log(error, data);
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries('albums');
-      toast.success('Added new Album!');
-    },
+    // onMutate: async (data) => {
+    //   await queryClient.cancelQueries('albums');
+    //   const previousData = queryClient.getQueryData('albums');
+    //   queryClient.setQueryData('albums', (oldData) => {
+    //     return {
+    //       ...oldData,
+    //       data: [...oldData.data, { id: oldData?.data?.length + 1, ...data }],
+    //     };
+    //   });
+    //   return {
+    //     previousData,
+    //   };
+    // },
+    // onError: (error, data, context) => {
+    //   queryClient.setQueryData('albums', context.previousData);
+    //   toast.error('No fue posible agregar album.');
+    //   console.log(error, data);
+    // },
+    // onSettled: () => {
+    //   queryClient.invalidateQueries('albums');
+    //   toast.success('Nuevo album agregado!');
+    // },
   });
 };
 
-// 4. Delete Album
+// 5. Eliminar Album
 const deleteAlbum = (id) => {
-  return auth.delete(`/albums/${id}`);
+  return axios.delete(`https://jsonplaceholder.typicode.com/albums/${id}`);
 };
 
 export const useDeleteAlbum = () => {
@@ -127,15 +183,15 @@ export const useDeleteAlbum = () => {
     // Option A - Traditional
     // onSuccess: (data) => {
     //   queryClient.invalidateQueries('albums');
-    //   toast.success('Album deleted!');
+    //   toast.success('Album eliminado!');
     //   console.log(data);
     // },
     // onError: (error) => {
-    //   toast.error('Could not delete Album...');
+    //   toast.error('No fue posible eliminar album.');
     //   console.log(error);
     // },
-    // NOTE: Options B & C will only work if 'albums' has been "populated"
-    // Option B - Update 'onSuccess' without sending and additional network request
+    // NOTA: Opciones B & C serviran únicamente si el 'recurso' ha sido "poblado"
+    // Opción B - Actualizar después de 'onSuccess' (sin enviar una solicitud de red adicional)
     // onSuccess: (data) => {
     //   queryClient.setQueryData('albums', (oldData) => {
     //     return {
@@ -145,7 +201,7 @@ export const useDeleteAlbum = () => {
     //   });
     // },
     // onError: (error) => {
-    //   toast.error('Could not delete Album...');
+    //   toast.error('No fue posible eliminar album.');
     //   console.log(error);
     // },
     // Option C - Optimistic delete
@@ -164,8 +220,7 @@ export const useDeleteAlbum = () => {
     },
     onError: (error, data, context) => {
       queryClient.setQueryData('albums', context.previousData);
-      toast.error('Could not delete Album...');
-      console.log(error, data);
+      toast.error('No fue posible eliminar album.');
     },
     onSettled: () => {
       queryClient.invalidateQueries('albums');

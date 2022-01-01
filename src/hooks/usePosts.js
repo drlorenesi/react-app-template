@@ -24,6 +24,8 @@ export const useGetPosts = (
     // Success and Error Callbacks
     onSuccess,
     onError,
+    // retry: (failureCount, err) =>
+    //   err?.response?.status === 404 && failureCount < 2 ? true : false,
     // Maintain Data from last successful fetch
     // keepPreviousData: true
   });

@@ -8,7 +8,7 @@ const getUsers = () => {
 };
 
 export const useGetUsers = (
-  enabled = true,
+  // enabled = true,
   onSuccess = null,
   onError = null
 ) => {

@@ -11,9 +11,9 @@ export default function ErrorMessage({ error }) {
       }}
     >
       <Alert variant='danger'>
-        <Alert.Heading>The following error ocurred:</Alert.Heading>
+        <Alert.Heading>Ocurrió el siguiente error:</Alert.Heading>
         <ul>
-          <li>{error.message}</li>
+          <li>{error}</li>
         </ul>
       </Alert>
     </div>

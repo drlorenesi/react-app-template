@@ -1,25 +1,29 @@
-import { useGetProfile } from '../hooks/useProfile';
+import { Formik, Form as FormikForm } from 'formik';
+import * as Yup from 'yup';
+import toast from 'react-hot-toast';
+// Bootstrap
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+// Form Inputs
+import InputField from '../components/formInputs/InputField';
+
+import { useGetPerfil, usePutPerfil } from '../hooks/usePerfil';
 import Loader from '../components/Loader';
 import ErrorMessage from '../components/ErrorMessage';
 
-export default function Profile() {
-  const onSuccess = (data) => {
-    console.log('onSuccess:', data);
-  };
-
-  const onError = (error) => {
-    console.log('onError:', error);
-  };
-
+export default function Perfil() {
   const {
     isLoading,
     // isFetching,
-    // data,
+    data,
     isError,
     error,
     // refetch,
     // dataUpdatedAt,
-  } = useGetProfile(onSuccess, onError);
+  } = useGetPerfil();
+  const { mutateAsync: updatePerfil } = usePutPerfil();
 
   if (isLoading) {
     return <Loader />;
@@ -29,10 +33,85 @@ export default function Profile() {
     return <ErrorMessage error={error} />;
   }
 
+  const initialValues = {
+    nombre: data?.data.nombre || '',
+    apellido: data?.data.apellido || '',
+    extension: data?.data.extension || '',
+    email: data?.data.email || '',
+  };
+
+  const validationSchema = Yup.object({
+    nombre: Yup.string()
+      .min(2, 'Tu nombre no puede ser menor de 2 caracteres.')
+      .max(255, 'Tu nombre no puede ser mayor de 255 caracteres.')
+      .required('Campo requerido.'),
+    apellido: Yup.string()
+      .min(2, 'Tu apellido no puede ser menor de 2 caracteres.')
+      .max(255, 'Tu apellido no puede ser mayor de 255 caracteres.')
+      .required('Campo requerido.'),
+    extension: Yup.string()
+      .min(2, 'Tu extension no puede ser menor de 2 caracteres.')
+      .max(255, 'Tu extension no puede ser mayor de 255 caracteres.')
+      .nullable(),
+  });
+
+  const onSubmit = async (values) => {
+    try {
+      await updatePerfil(values);
+    } catch (err) {
+      toast.error(err.response.data?.mensaje);
+    }
+  };
+
   return (
     <>
       <h1>Mi Perfil</h1>
-      <p>Perfil del Usuario</p>
+      <Row>
+        <Col lg={4} md={6}>
+          <Formik
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            onSubmit={onSubmit}
+            enableReinitialize
+            validateOnBlur={false}
+            // validateOnMount={true}
+          >
+            {(formik) => (
+              <FormikForm noValidate>
+                {/* Nombre */}
+                <Form.Group className='mb-3'>
+                  <Form.Label>Nombre</Form.Label>
+                  <InputField type='text' name='nombre' />
+                </Form.Group>
+                {/* Apellido */}
+                <Form.Group className='mb-3'>
+                  <Form.Label>Apellido</Form.Label>
+                  <InputField type='text' name='apellido' />
+                </Form.Group>
+                {/* Extension */}
+                <Form.Group className='mb-3'>
+                  <Form.Label>Extension</Form.Label>
+                  <InputField type='text' name='extension' />
+                </Form.Group>
+                {/* Email */}
+                <Form.Group className='mb-3'>
+                  <Form.Label>Email</Form.Label>
+                  <InputField type='text' name='email' readOnly />
+                </Form.Group>
+                {/* Submit */}
+                <Button
+                  variant='primary'
+                  type='submit'
+                  block='true'
+                  disabled={formik.isSubmitting || !formik.isValid}
+                >
+                  {formik.isSubmitting ? 'Actualizando...' : 'Actualizar'}
+                </Button>
+              </FormikForm>
+            )}
+          </Formik>
+        </Col>
+      </Row>
     </>
   );
 }
