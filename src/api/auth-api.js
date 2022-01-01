@@ -7,7 +7,7 @@ const config = axios.create({
 });
 
 config.interceptors.response.use(null, (error) => {
-  // Manejar errores inesperados
+  // A. Errores inesperados
   const expectedError =
     error.response &&
     error.response.status >= 400 &&
@@ -16,9 +16,9 @@ config.interceptors.response.use(null, (error) => {
     // Mostrar menaje de error al usuario
     toast.error('Lo sentimos, ocurrió un error inesperado 😖');
     // Enviar información de error a administrador
-    console.error('Enviando error a administrador...', error);
+    console.log('Enviando error a administrador...', error);
   }
-  // Manejar errores esperados
+  // B. Errores esperados
   // 1. Solicitudes no autenticadas
   if (error.response.status === 401) {
     toast.error('Por favor inicia sesión');

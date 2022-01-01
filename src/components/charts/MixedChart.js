@@ -1,7 +1,7 @@
 import Chart from 'react-apexcharts';
 import { formatDec } from '../../utils/formatUtils';
 
-export default function Area({ title, series, labels, width }) {
+export default function MixedChart({ title, series, labels, width }) {
   const options = {
     title: {
       text: title,

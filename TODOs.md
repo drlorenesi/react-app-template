@@ -1,9 +1,5 @@
 # Pendiente de Agregar
 
-## React Query
-
-- [ ] Agregar parallel queries
-
 ## React Router
 
 - [ ] Agregar rutas protegidas

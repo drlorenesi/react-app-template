@@ -1,7 +1,7 @@
 import Chart from 'react-apexcharts';
 import { formatP } from '../../utils/formatUtils';
 
-export default function Area({ series, labels, width }) {
+export default function RadialChart({ series, labels, width }) {
   const options = {
     chart: {
       height: 350,

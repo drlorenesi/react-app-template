@@ -1,4 +1,4 @@
-export default function About() {
+export default function Acerca() {
   return (
     <>
       <h1>Acerca de este Portal</h1>

@@ -5,12 +5,15 @@ import Navbar from 'react-bootstrap/Navbar';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-// Services
+// Login API
 import login from '../api/login-api';
+import decodeSession from '../utils/decodeSession';
+
 // Test Login
 import { useSession } from '../context/SessionContext';
 
-export default function Navigation() {
+export default function Navigation({ session }) {
+  let decoded = decodeSession(session);
   const { setSession } = useSession();
 
   const navigate = useNavigate();
@@ -65,6 +68,16 @@ export default function Navigation() {
             <Nav.Link as={NavLink} to='/acerca'>
               Acerca de
             </Nav.Link>
+            {true && (
+              <NavDropdown align='end' title='Admin'>
+                <NavDropdown.Item as={NavLink} to='/admin/usuarios'>
+                  Usuarios
+                </NavDropdown.Item>
+                <NavDropdown.Item as={NavLink} to='/admin/sesiones'>
+                  Sesiones
+                </NavDropdown.Item>
+              </NavDropdown>
+            )}
             <NavDropdown align='end' title={<FaUserCircle size={21} />}>
               <NavDropdown.Item as={NavLink} to='/perfil'>
                 Mi Perfil

@@ -13,7 +13,7 @@ import login from '../../api/login-api';
 // Session Context
 import { useSession } from '../../context/SessionContext';
 
-function Login() {
+export default function Login() {
   const navigate = useNavigate();
   const { setSession } = useSession();
   const [signInError, setSignInError] = useState(false);
@@ -121,5 +121,3 @@ function Login() {
     </>
   );
 }
-
-export default Login;

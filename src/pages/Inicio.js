@@ -6,7 +6,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 
-function Home() {
+export default function Inicio() {
   const { data } = useGetPosts();
 
   const [title, setTitle] = useState('');
@@ -63,5 +63,3 @@ function Home() {
     </>
   );
 }
-
-export default Home;

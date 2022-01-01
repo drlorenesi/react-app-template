@@ -2,6 +2,7 @@ import { Route, Routes } from 'react-router-dom';
 // Components
 import Navigation from './components/Navigation';
 import Footer from './components/Footer';
+import PrivateOutlet from './components/PrivateOutlet';
 // Context
 import { useSession } from './context/SessionContext';
 // Pages
@@ -15,10 +16,12 @@ import SampleForm from './pages/formularios/SampleForm';
 import FormTemplate from './pages/formularios/FormTemplate';
 import Charts from './pages/Charts';
 import Acerca from './pages/Acerca';
+import Usuarios from './pages/Usuarios';
+import Sesiones from './pages/Sesiones';
 import Perfil from './pages/Perfil';
 import Pass from './pages/Pass';
-import NotFound from './pages/NotFound';
-import Home from './pages/Home';
+import NoExiste from './pages/NoExiste';
+import Inicio from './pages/Inicio';
 // Login
 import Registro from './pages/login/Registro';
 import Gracias from './pages/login/Gracias';
@@ -37,10 +40,10 @@ export default function App() {
   if (session) {
     return (
       <div className='d-flex flex-column min-vh-100'>
-        <Navigation />
+        <Navigation session={session} />
         <Container className='flex-shrink-0 mb-3' fluid>
           <Routes>
-            <Route path='/' element={<Home />} />
+            <Route path='/' element={<Inicio />} />
             <Route path='/posts' element={<Posts />} />
             <Route path='/posts/:id' element={<PostDetails />} />
             <Route path='/albums' element={<Albums />} />
@@ -60,7 +63,16 @@ export default function App() {
             <Route path='/pass' element={<Pass />} />
             <Route path='/acerca' element={<Acerca />} />
             <Route path='/reinicio' element={<Reinicio />} />
-            <Route path='*' element={<NotFound />} />
+            {/* Private Routes */}
+            <Route
+              path='/admin'
+              element={<PrivateOutlet session={session} roles={[0]} />}
+            >
+              <Route path='usuarios' element={<Usuarios />} />
+              <Route path='sesiones' element={<Sesiones />} />
+            </Route>
+            {/* -------------- */}
+            <Route path='*' element={<NoExiste />} />
           </Routes>
         </Container>
         <footer className='mt-auto py-3 bg-light'>

@@ -8,12 +8,21 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 // Form Inputs
 import InputField from '../components/formInputs/InputField';
+import SelectField from '../components/formInputs/SelectField';
 
 import { useGetPerfil, usePutPerfil } from '../hooks/usePerfil';
+import { useGetRoles } from '../hooks/useRoles';
 import Loader from '../components/Loader';
 import ErrorMessage from '../components/ErrorMessage';
 
 export default function Perfil() {
+  const { data: roles } = useGetRoles();
+  const options = roles?.data.map((role) => {
+    return { key: role.descripcion, value: role.nivel };
+  });
+
+  console.log(options);
+
   const {
     isLoading,
     // isFetching,
@@ -38,6 +47,7 @@ export default function Perfil() {
     apellido: data?.data.apellido || '',
     extension: data?.data.extension || '',
     email: data?.data.email || '',
+    role: data?.data.role.nivel || '',
   };
 
   const validationSchema = Yup.object({
@@ -53,10 +63,13 @@ export default function Perfil() {
       .min(2, 'Tu extension no puede ser menor de 2 caracteres.')
       .max(255, 'Tu extension no puede ser mayor de 255 caracteres.')
       .nullable(),
+    email: Yup.string().email('Correo electrónico inválido.'),
+    role: Yup.number().integer().min(0).max(10),
   });
 
   const onSubmit = async (values) => {
     try {
+      // console.log(values);
       await updatePerfil(values);
     } catch (err) {
       toast.error(err.response.data?.mensaje);
@@ -97,6 +110,11 @@ export default function Perfil() {
                 <Form.Group className='mb-3'>
                   <Form.Label>Email</Form.Label>
                   <InputField type='text' name='email' readOnly />
+                </Form.Group>
+                {/* Role */}
+                <Form.Group className='mb-2'>
+                  <Form.Label>Role</Form.Label>
+                  <SelectField name='role' options={options} />
                 </Form.Group>
                 {/* Submit */}
                 <Button

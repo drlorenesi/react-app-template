@@ -15,7 +15,7 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 import Loader from '../../components/Loader';
 import ErrorMessage from '../../components/ErrorMessage';
 
-export default function PostDetails() {
+export default function AlbumDetalles() {
   const navigate = useNavigate();
 
   const { id } = useParams();
