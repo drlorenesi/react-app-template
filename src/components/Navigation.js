@@ -14,6 +14,7 @@ import { useSession } from '../context/SessionContext';
 
 export default function Navigation({ session }) {
   let decoded = decodeSession(session);
+
   const { setSession } = useSession();
 
   const navigate = useNavigate();
@@ -68,7 +69,7 @@ export default function Navigation({ session }) {
             <Nav.Link as={NavLink} to='/acerca'>
               Acerca de
             </Nav.Link>
-            {true && (
+            {[1].includes(decoded.role) && (
               <NavDropdown align='end' title='Admin'>
                 <NavDropdown.Item as={NavLink} to='/admin/usuarios'>
                   Usuarios

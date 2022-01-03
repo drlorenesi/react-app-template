@@ -31,12 +31,8 @@ export default function Pass() {
   });
 
   const onSubmit = async (values) => {
-    try {
-      const res = await auth.post('/cambio-pass', values);
-      toast.success(res.data?.mensaje);
-    } catch (err) {
-      toast.error(err.response.data?.mensaje);
-    }
+    const res = await auth.post('/cambio-pass', values);
+    toast.success(res.data?.mensaje);
   };
 
   return (

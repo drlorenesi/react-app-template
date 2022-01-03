@@ -4,7 +4,7 @@ import auth from '../api/auth-api';
 
 // 1. Get Roles
 const getRoles = () => {
-  return auth.get('/roles');
+  return auth.get('/admin/roles');
 };
 
 export const useGetRoles = (

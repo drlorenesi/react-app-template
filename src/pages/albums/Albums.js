@@ -3,7 +3,7 @@ import { useGetAlbums, useDeleteAlbum } from '../../hooks/useAlbums';
 import Loader from '../../components/Loader';
 import ErrorMessage from '../../components/ErrorMessage';
 import DataTable from '../../components/DataTable';
-import { formatDate } from '../../utils/formatUtils';
+import { formatDateLong } from '../../utils/formatUtils';
 import { FaPlus, FaEdit, FaTrashAlt } from 'react-icons/fa';
 import swal from 'sweetalert';
 // Bootstrap
@@ -29,8 +29,7 @@ export default function Albums() {
   }
 
   if (isError) {
-    console.log(error.message);
-    return <ErrorMessage error={error} />;
+    return <ErrorMessage error={error.message} />;
   }
 
   // Edit
@@ -113,10 +112,10 @@ export default function Albums() {
       </Button>
       {dataUpdatedAt ? (
         <p>
-          <i>Última actualización: {formatDate(dataUpdatedAt)}</i>
+          <i>Última actualización: {formatDateLong(dataUpdatedAt)}</i>
         </p>
       ) : null}
-      {data && <DataTable columns={columns} data={data.data} />}
+      {data && <DataTable columns={columns} data={data.data} footer={false} />}
     </>
   );
 }

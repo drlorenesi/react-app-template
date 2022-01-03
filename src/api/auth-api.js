@@ -19,24 +19,17 @@ config.interceptors.response.use(null, (error) => {
     console.log('Enviando error a administrador...', error);
   }
   // B. Errores esperados
-  // 1. Solicitudes no autenticadas
+  // 1. Solicitudes no autenticadas (redireccionar a login)
   if (error.response.status === 401) {
-    toast.error('Por favor inicia sesión');
-    setTimeout(() => {
-      localStorage.removeItem('sessionInfo');
-      window.location.assign('/login');
-    }, 1000);
+    localStorage.removeItem('sessionInfo');
+    window.location.replace('/login');
   }
-  // 2. Solicitudes no autorizadas
+  // 2. Solicitudes no autorizadas (redireccionar a inicio)
   if (error.response.status === 403) {
     toast.error('No tienes permiso para acceder al recurso');
     setTimeout(() => {
       window.location.assign('/');
     }, 1000);
-  }
-  // 3. Recurso no existe
-  if (error.response.status === 404) {
-    // navigate('/not-found', { replace: true })
   }
   return Promise.reject(error);
 });

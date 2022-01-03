@@ -1,7 +1,7 @@
 import { useGetUsers } from '../hooks/useUsers';
 import Loader from '../components/Loader';
 import ErrorMessage from '../components/ErrorMessage';
-import { formatDate } from '../utils/formatUtils';
+import { formatDateLong } from '../utils/formatUtils';
 // Bootstrap
 import Button from 'react-bootstrap/Button';
 
@@ -44,7 +44,7 @@ export default function Users() {
       </Button>
       {dataUpdatedAt ? (
         <p>
-          <i>Última actualización: {formatDate(dataUpdatedAt)}</i>
+          <i>Última actualización: {formatDateLong(dataUpdatedAt)}</i>
         </p>
       ) : null}
       {data?.data.map((user) => {

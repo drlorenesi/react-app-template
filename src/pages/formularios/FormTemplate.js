@@ -16,7 +16,7 @@ export default function FormTemplate() {
 
   // Sum up to 12
   const labelSize = 3;
-  const inputSize = 4;
+  const inputSize = 9;
 
   const initialValues = {
     startDate: startOfMonth(new Date()),
@@ -38,7 +38,7 @@ export default function FormTemplate() {
     <>
       <h1>Form Template</h1>
       <Row>
-        <Col sm={6}>
+        <Col lg={4} md={6} sm={6}>
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
@@ -85,7 +85,7 @@ export default function FormTemplate() {
           </Formik>
           <hr />
         </Col>
-        <Col sm={6}>
+        <Col lg={4} md={6}>
           <p>The difference in days is: {result}</p>
           <p>The received values were:</p>
           <pre>

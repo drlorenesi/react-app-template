@@ -6,30 +6,33 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 // Form Inputs
-import InputField from '../components/formInputs/InputField';
-import SelectField from '../components/formInputs/SelectField';
+import InputField from '../../components/formInputs/InputField';
+import SelectField from '../../components/formInputs/SelectField';
 
-import { useGetPerfil, usePutPerfil } from '../hooks/usePerfil';
-import { useGetRoles } from '../hooks/useRoles';
-import Loader from '../components/Loader';
-import ErrorMessage from '../components/ErrorMessage';
+import { useGetUsuario, usePutUsuario } from '../../hooks/useUsuarios';
+import { useGetRoles } from '../../hooks/useRoles';
+import { Link, useParams, useNavigate } from 'react-router-dom';
+import Loader from '../../components/Loader';
+import ErrorMessage from '../../components/ErrorMessage';
+import { formatDateLong } from '../../utils/formatUtils';
 
-export default function Perfil() {
+export default function Usuario() {
+  const navigate = useNavigate();
+
+  const { id } = useParams();
+
   const { data: roles } = useGetRoles();
   const options = roles?.data.map((role) => {
     return { key: role.descripcion, value: role.nivel };
   });
 
-  const {
-    isLoading,
-    // isFetching,
-    data,
-    isError,
-    error,
-    // refetch,
-    // dataUpdatedAt,
-  } = useGetPerfil();
-  const { mutateAsync: updatePerfil } = usePutPerfil();
+  const onError = (error) => {
+    if (error?.response.status === 404)
+      navigate('/not-found', { replace: true });
+  };
+
+  const { isLoading, data, isError, error } = useGetUsuario(id, null, onError);
+  const { mutateAsync: updateUsuario } = usePutUsuario();
 
   if (isLoading) {
     return <Loader />;
@@ -44,7 +47,7 @@ export default function Perfil() {
     apellido: data?.data.apellido || '',
     extension: data?.data.extension || '',
     email: data?.data.email || '',
-    role: data?.data.role.nivel || '',
+    role: data?.data.role?.nivel || '',
   };
 
   const validationSchema = Yup.object({
@@ -65,12 +68,12 @@ export default function Perfil() {
   });
 
   const onSubmit = async (values) => {
-    await updatePerfil(values);
+    await updateUsuario({ id, values });
   };
 
   return (
     <>
-      <h1>Mi Perfil</h1>
+      <h1>Actualizar Usuario</h1>
       <Row>
         <Col lg={4} md={6}>
           <Formik
@@ -106,7 +109,7 @@ export default function Perfil() {
                 {/* Role */}
                 <Form.Group className='mb-2'>
                   <Form.Label>Role</Form.Label>
-                  <SelectField name='role' options={options} disabled />
+                  <SelectField name='role' options={options} />
                 </Form.Group>
                 {/* Submit */}
                 <Button
@@ -121,7 +124,29 @@ export default function Perfil() {
             )}
           </Formik>
         </Col>
+        <Col lg={4} md={6}>
+          <p>
+            Perfil creado:{' '}
+            <i>{formatDateLong(new Date(data?.data.createdAt))}</i>
+          </p>
+          <p>
+            Perfil actualziado:{' '}
+            <i>{formatDateLong(new Date(data?.data.updatedAt))}</i>
+          </p>
+          <p>
+            Ingreso actual:{' '}
+            <i>{formatDateLong(new Date(data?.data.ingresoActual))}</i>
+          </p>
+          <p>
+            Último ingreso:{' '}
+            <i>{formatDateLong(new Date(data?.data.ultimoIngreso))}</i>
+          </p>
+        </Col>
       </Row>
+      <hr />
+      <Link to='/admin/usuarios'>
+        <Button variant='outline-primary'>&laquo; Regresar</Button>
+      </Link>
     </>
   );
 }

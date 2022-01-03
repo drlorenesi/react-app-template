@@ -20,6 +20,11 @@ code {
   /*Default 1.5*/
 }
 
+.table td,
+.table th {
+  font-size: 14px;
+}
+
 /* Login and Register Forms */
 /* https://www.w3schools.com/css/css_margin.asp */
 /* https://www.freecodecamp.org/news/how-to-build-sign-up-form-with-html-and-css/ */

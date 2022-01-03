@@ -26,7 +26,7 @@ import copyToClipboard from '../utils/copyToClipboard';
 
 import toast from 'react-hot-toast';
 
-export default function DataTable({ columns, data }) {
+export default function DataTable({ columns, data, footer }) {
   // Create a "myRef" variable to select DOM item
   const myRef = useRef();
   // Function to copy data to clipboard
@@ -292,17 +292,19 @@ export default function DataTable({ columns, data }) {
               );
             })}
           </tbody>
-          <tfoot>
-            {footerGroups.map((group) => (
-              <tr {...group.getFooterGroupProps()}>
-                {group.headers.map((column) => (
-                  <td {...column.getFooterProps()}>
-                    {column.render('Footer')}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tfoot>
+          {footer && (
+            <tfoot>
+              {footerGroups.map((group) => (
+                <tr {...group.getFooterGroupProps()}>
+                  {group.headers.map((column) => (
+                    <td {...column.getFooterProps()}>
+                      {column.render('Footer')}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tfoot>
+          )}
         </Table>
       </Row>
       {/* Pages */}

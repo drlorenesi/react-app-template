@@ -16,8 +16,9 @@ import SampleForm from './pages/formularios/SampleForm';
 import FormTemplate from './pages/formularios/FormTemplate';
 import Charts from './pages/Charts';
 import Acerca from './pages/Acerca';
-import Usuarios from './pages/Usuarios';
-import Sesiones from './pages/Sesiones';
+import Usuarios from './pages/admin/Usuarios';
+import Usuario from './pages/admin/Usuario';
+import Sesiones from './pages/admin/Sesiones';
 import Perfil from './pages/Perfil';
 import Pass from './pages/Pass';
 import NoExiste from './pages/NoExiste';
@@ -66,9 +67,10 @@ export default function App() {
             {/* Private Routes */}
             <Route
               path='/admin'
-              element={<PrivateOutlet session={session} roles={[0]} />}
+              element={<PrivateOutlet session={session} roles={[1]} />}
             >
               <Route path='usuarios' element={<Usuarios />} />
+              <Route path='usuarios/:id' element={<Usuario />} />
               <Route path='sesiones' element={<Sesiones />} />
             </Route>
             {/* -------------- */}

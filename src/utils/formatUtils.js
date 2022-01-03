@@ -1,5 +1,5 @@
 // expected output: miércoles 22/12/2021 8:01:16 p. m.
-export const formatDate = (date) =>
+export const formatDateLong = (date) =>
   new Intl.DateTimeFormat('es-GT', {
     weekday: 'long',
     year: 'numeric',
@@ -9,6 +9,17 @@ export const formatDate = (date) =>
     minute: 'numeric',
     second: 'numeric',
     hourCycle: 'h12',
+  }).format(date);
+
+// expected output: 1/1/2022 19:03:10
+export const formatDateShort = (date) =>
+  new Intl.DateTimeFormat('es-GT', {
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric',
   }).format(date);
 
 // expected output: 123,456,789.00
