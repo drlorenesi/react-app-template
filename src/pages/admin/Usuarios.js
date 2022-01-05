@@ -30,13 +30,13 @@ export default function Usuarios() {
   };
 
   const handleSuspend = async (id) => {
-    await api.put(`/admin/suspender/${id}`);
+    await api.post(`/admin/suspender/${id}`);
     toast.success('Usuario suspendido.');
     queryClient.invalidateQueries('usuarios');
   };
 
   const handleRestablecer = async (id) => {
-    await api.put(`/admin/restablecer/${id}`);
+    await api.post(`/admin/restablecer/${id}`);
     toast.success('Usuario reestablecido.');
     queryClient.invalidateQueries('usuarios');
   };
@@ -54,9 +54,9 @@ export default function Usuarios() {
       Cell: ({ row }) => (row.original.verificado ? 'Sí' : 'Pendiente'),
     },
     {
-      Header: 'Último Ingreso',
-      accessor: 'ultimoIngreso',
-      Cell: ({ row }) => formatDateShort(new Date(row.original.ultimoIngreso)),
+      Header: 'Ingreso Actual',
+      accessor: 'ingresoActual',
+      Cell: ({ row }) => formatDateShort(new Date(row.original.ingresoActual)),
     },
     {
       Header: 'Estatus',

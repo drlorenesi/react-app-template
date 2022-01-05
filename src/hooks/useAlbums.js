@@ -126,7 +126,7 @@ export const useAddAlbum = () => {
     // Option A - Traditional
     onSuccess: (data) => {
       queryClient.invalidateQueries('posts');
-      toast.success('Added new Post!');
+      toast.success('Added new Album!');
     },
     onError: (error) => {
       toast.error('Could not add new Album...');
