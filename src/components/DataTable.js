@@ -195,8 +195,8 @@ export default function DataTable({ columns, data, footer }) {
   return (
     <>
       {/* Show filas, Copy, Excel & Buscar... */}
-      <div className='d-flex flex-wrap mb-2'>
-        <div className='me-auto'>
+      <div className='d-flex flex-wrap'>
+        <div className='me-auto mb-2'>
           <ButtonGroup>
             <DropdownButton
               as={ButtonGroup}
@@ -229,7 +229,7 @@ export default function DataTable({ columns, data, footer }) {
             </Button>
           </ButtonGroup>
         </div>
-        <div>
+        <div className='mb-2'>
           <Form>
             <FormControl
               type='search'
@@ -245,72 +245,75 @@ export default function DataTable({ columns, data, footer }) {
       </div>
       {/* Table */}
       <Row>
-        <Table
-          ref={myRef}
-          striped
-          bordered
-          hover
-          size='sm'
-          responsive
-          {...getTableProps()}
-        >
-          <thead>
-            {headerGroups.map((headerGroup) => (
-              <tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => (
-                  <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                    <div className='d-flex justify-content-between flex-nowrap'>
-                      <div>{column.render('Header')}</div>
-                      <div>
-                        {column.isSorted ? (
-                          column.isSortedDesc ? (
-                            <FaSortDown />
+        <div>
+          <Table
+            ref={myRef}
+            striped
+            bordered
+            hover
+            size='sm'
+            responsive
+            {...getTableProps()}
+          >
+            <thead>
+              {headerGroups.map((headerGroup) => (
+                <tr {...headerGroup.getHeaderGroupProps()}>
+                  {headerGroup.headers.map((column) => (
+                    <th
+                      {...column.getHeaderProps(column.getSortByToggleProps())}
+                    >
+                      <div className='d-flex justify-content-between flex-nowrap'>
+                        <div>{column.render('Header')}</div>
+                        <div>
+                          {column.isSorted ? (
+                            column.isSortedDesc ? (
+                              <FaSortDown />
+                            ) : (
+                              <FaSortUp />
+                            )
                           ) : (
-                            <FaSortUp />
-                          )
-                        ) : (
-                          <FaSort color='grey' />
-                        )}
+                            <FaSort color='grey' />
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody {...getTableBodyProps()}>
-            {page.map((row, i) => {
-              prepareRow(row);
-              return (
-                <tr {...row.getRowProps()}>
-                  {row.cells.map((cell) => {
-                    return (
-                      <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                    );
-                  })}
-                </tr>
-              );
-            })}
-          </tbody>
-          {footer && (
-            <tfoot>
-              {footerGroups.map((group) => (
-                <tr {...group.getFooterGroupProps()}>
-                  {group.headers.map((column) => (
-                    <td {...column.getFooterProps()}>
-                      {column.render('Footer')}
-                    </td>
+                    </th>
                   ))}
                 </tr>
               ))}
-            </tfoot>
-          )}
-        </Table>
+            </thead>
+            <tbody {...getTableBodyProps()}>
+              {page.map((row, i) => {
+                prepareRow(row);
+                return (
+                  <tr {...row.getRowProps()}>
+                    {row.cells.map((cell) => {
+                      return (
+                        <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                      );
+                    })}
+                  </tr>
+                );
+              })}
+            </tbody>
+            {footer && (
+              <tfoot>
+                {footerGroups.map((group) => (
+                  <tr {...group.getFooterGroupProps()}>
+                    {group.headers.map((column) => (
+                      <td {...column.getFooterProps()}>
+                        {column.render('Footer')}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tfoot>
+            )}
+          </Table>
+        </div>
       </Row>
       {/* Pages */}
       <div className='d-flex justify-content-between flex-wrap'>
         <div>{mensaje}</div>
-
         <div>
           <Pagination>
             <Pagination.Prev
